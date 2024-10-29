@@ -1,0 +1,69 @@
+﻿@page
+@model IndexModel
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg">
+                <div class="card-header text-center bg-primary text-white">
+                    <h2>Math Operations</h2>
+                </div>
+                <div class="card-body">
+                    <form method="post" class="mb-4">
+                        <div class="mb-3">
+                            <label for="number" class="form-label">Enter a number:</label>
+                            <input type="number" name="Number" id="number" class="form-control" min="0" required />
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">Calculate</button>
+                    </form>
+
+                    @if (Model.Number != null)
+                    {
+                        <div class="alert alert-secondary">
+                            <strong>The number entered:</strong> @Model.Number
+                        </div>
+                    }
+
+                    @if (Model.FactorialResult != null)
+                    {
+                        <div class="alert alert-info">
+                            <strong>Factorial of @Model.Number:</strong> @Model.FactorialResult
+                        </div>
+                    }
+
+                    @if (Model.PrimeFactorizationResult != null)
+                    {
+                        <div class="alert alert-info">
+                            <strong>Prime factorization of @Model.Number:</strong> @Model.PrimeFactorizationResult
+                        </div>
+                    }
+
+                    @if (Model.DivisorsResult != null)
+                    {
+                        <div class="alert alert-info">
+                            <strong>Dividors list of @Model.Number:</strong> @Model.DivisorsResult
+                        </div>
+                    }
+
+                    @if (Model.FibonacciResult != null)
+                    {
+                        <div class="alert alert-info">
+                            <strong>Fibonacci serie with @Model.Number elemenst:</strong> @Model.FibonacciResult
+                        </div>
+                    }
+
+                    @if (Model.PIResult != null)
+                    {
+                        <div class="alert alert-info">
+                            <strong>PI with @Model.Number digits:</strong> @Model.PIResult
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

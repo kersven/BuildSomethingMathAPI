@@ -1,0 +1,61 @@
+version: '3.4'
+
+services:
+  fibonacciapi:
+    image: ${DOCKER_REGISTRY-}fibonacciapi
+    build:
+      context: .
+      dockerfile: FibonacciAPI/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    deploy:
+      replicas: 1
+
+  mathapi:
+    image: ${DOCKER_REGISTRY-}mathapi
+    build:
+      context: .
+      dockerfile: MathAPI/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    deploy:
+      replicas: 3
+
+  piapi:
+    image: ${DOCKER_REGISTRY-}piapi
+    build:
+      context: .
+      dockerfile: PiAPI/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    deploy:
+      replicas: 1
+
+  mathapp:
+    image: ${DOCKER_REGISTRY-}mathapp
+    build:
+      context: .
+      dockerfile: MathApp/Dockerfile
+    ports:
+      - "5000:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - mathapi
+      - fibonacciapi
+      - piapi
+      - sqlexpress
+
+  sqlexpress:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      - SA_PASSWORD=YourStrong!Passw0rd
+      - ACCEPT_EULA=Y
+    ports:
+      - "1433:1433"
+    volumes:
+      - sql_data:/var/opt/mssql
+    container_name: sqlexpress
+
+volumes:
+  sql_data:

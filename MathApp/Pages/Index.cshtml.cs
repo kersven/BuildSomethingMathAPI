@@ -29,13 +29,30 @@ namespace MathApp.Pages
 
         public async Task OnPostAsync()
         {
-            // Call the API and get the factorial
-            FactorialResult = await _apiService.GetFactorialAsync(Number);
-            PrimeFactorizationResult = await _apiService.GetPrimeFactorizationAsync(Number);
-            DivisorsResult = await _apiService.GetDivisorsAsync(Number);
-            FibonacciResult = await _apiService.GetFibonacciSeqAsync(Number);
-            PIResult = await _apiService.GetPIAsync(Number);
-
+            var factorialTask = _apiService.GetFactorialAsync(Number);
+            var primeFactorizationTask = _apiService.GetPrimeFactorizationAsync(Number);
+            var divisorsTask = _apiService.GetDivisorsAsync(Number);
+            var fibonacciTask = _apiService.GetFibonacciSeqAsync(Number);
+            var piTask = _apiService.GetPIAsync(Number);
+ 
+            await Task.WhenAll(factorialTask, primeFactorizationTask, divisorsTask, fibonacciTask, piTask);
+ 
+            FactorialResult = await factorialTask;
+            PrimeFactorizationResult = await primeFactorizationTask;
+            DivisorsResult = await divisorsTask;
+            FibonacciResult = await fibonacciTask;
+            PIResult = await piTask;
         }
+        
+        //public async Task OnPostAsync()
+        //{
+        //    // Call the API and get the factorial
+        //    FactorialResult = await _apiService.GetFactorialAsync(Number);
+        //    PrimeFactorizationResult = await _apiService.GetPrimeFactorizationAsync(Number);
+        //    DivisorsResult = await _apiService.GetDivisorsAsync(Number);
+        //    FibonacciResult = await _apiService.GetFibonacciSeqAsync(Number);
+        //    PIResult = await _apiService.GetPIAsync(Number);
+        //
+        //}
     }
 }

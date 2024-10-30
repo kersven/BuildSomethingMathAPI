@@ -14,6 +14,9 @@ EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{59678C8B-6620-47E4-8AB4-17D3094F48AD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "k8s", "k8s", "{A5A79FA5-92D6-45D8-96BF-B6E7AB062FB7}"
+	ProjectSection(SolutionItems) = preProject
+		Kubernetes.yaml = Kubernetes.yaml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

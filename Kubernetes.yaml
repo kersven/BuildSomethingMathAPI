@@ -1,0 +1,199 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fibonacciapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fibonacciapi
+  template:
+    metadata:
+      labels:
+        app: fibonacciapi
+    spec:
+      containers:
+      - name: fibonacciapi
+        image: kersven/fibonacciapi
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Development
+ 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fibonacciapi
+spec:
+  selector:
+    app: fibonacciapi
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+ 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mathapi
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mathapi
+  template:
+    metadata:
+      labels:
+        app: mathapi
+    spec:
+      containers:
+      - name: mathapi
+        image: kersven/mathapi
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Development
+ 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mathapi
+spec:
+  selector:
+    app: mathapi
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+ 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: piapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: piapi
+  template:
+    metadata:
+      labels:
+        app: piapi
+    spec:
+      containers:
+      - name: piapi
+        image: kersven/piapi
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Development
+ 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: piapi
+spec:
+  selector:
+    app: piapi
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+ 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mathapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mathapp
+  template:
+    metadata:
+      labels:
+        app: mathapp
+    spec:
+      containers:
+      - name: mathapp
+        image: kersven/mathapp
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Development
+        ports:
+        - containerPort: 80
+ 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mathapp
+spec:
+  selector:
+    app: mathapp
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: LoadBalancer
+ 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sqlexpress
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sqlexpress
+  template:
+    metadata:
+      labels:
+        app: sqlexpress
+    spec:
+      containers:
+      - name: sqlexpress
+        image: mcr.microsoft.com/mssql/server:2019-latest
+        env:
+        - name: SA_PASSWORD
+          value: YourStrong!Passw0rd
+        - name: ACCEPT_EULA
+          value: "Y"
+        ports:
+        - containerPort: 1433
+        volumeMounts:
+        - name: sql-data
+          mountPath: /var/opt/mssql
+      volumes:
+      - name: sql-data
+        persistentVolumeClaim:
+          claimName: sql-data-pvc
+ 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sqlexpress
+spec:
+  selector:
+    app: sqlexpress
+  ports:
+    - protocol: TCP
+      port: 1433
+      targetPort: 1433
+ 
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sql-data-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
